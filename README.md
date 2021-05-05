@@ -1,6 +1,6 @@
 # Stegtool: A simple example of Steganography using Python
 
-## What is Steganography
+## What is Steganography?
 
 [Steganography](https://en.wikipedia.org/wiki/Steganography) defines the practice of concealing a message within another message or a physical object. From a digital point of view, this can be implemented by embedding some hidden content inside a file, without causing the file to change drastically.
 
@@ -12,7 +12,7 @@ In order to hide the content inside a picture, I used a technique known as **LSB
 
 The main content of a, for example, PNG file includes color information for each pixel of the image file. More specifically, 24 bits are used to store the Red, Green and Blue components (8 bits each) of every single pixel. This means, for example, that if we have a `1920x1080` image file, this will contain `2073600` pixels that will be stored as 3 sequences of 8 bit each. So, at the end, we'll have `6220800` bytes.
 
-If we change, for each byte, the *Least Significant Beat* (so, the last one of the 8-bit sequence) the image will change only slightly and in an almost imperceptible way. This means that, if we store each bit of our hidden content by changing the LSB of every byte of the image, we'll be able to hide some data in it that we'll retrieve in a second step.
+If we change, for each byte, the *Least Significant Bit* (so, the last one of the 8-bit sequence) the image will change only slightly and in an almost imperceptible way. This means that, if we store each bit of our hidden content by changing the LSB of every byte of the image, we'll be able to hide some data in it that we'll retrieve in a second step.
 
 If our image contains `6220800` bytes as before, we'll be able to store a single bit inside every byte, so we'll have room for `6220800` bits, or `777600` bytes.
 
