@@ -9,13 +9,53 @@ import sys
 
     Usage: python3 [scriptname] [/path/to/image]
 
-    The image must have lossless encoding, otherwise
+    The image must use lossless encoding, otherwise
     information might be compromised or lost during 
-    compression.
+    compression. The script assumes that the input image
+    includes some hidden content, otherwise its behaviour
+    is undefined.
 
 """
 
+# Retrieves the information hidden in the picture
+# The byte string retrieved is formatted as follows
+
+#   - first 4 bytes -> extension length
+#   - n following bytes -> extension
+#   - next 4 bytes -> content length
+#   - next m bytes -> content 
+
+def retrieve_file(content):
+    print('Saving...') 
+
+    # Reads extension size and then reads the bytes
+    # containing the extension
+    ext_size = int.from_bytes(
+            content[:4], 
+            byteorder='big'
+    )
+
+    ext = content[4:4+ext_size].decode('utf-8')
+    
+    # Reads content length and then reads the content
+    content_length = int.from_bytes(
+            content[ext_size+4:ext_size+8], 
+            byteorder='big'
+    )
+
+    content = content[ext_size+8:ext_size+8+content_length]
+    
+    # Saves to a file with the given extensions
+    with open(f'out.{ext}', 'wb') as f:
+        f.write(content)
+
+    print(f'Output written to out.{ext}')
+    print(f'Wrote {content_length} bytes')
+
+
+# Extracts embedded content inside the image
 def decode(image):
+    print("Extracting content...")
 
     # Pixel Matrix
     width, height = image.size
@@ -32,16 +72,8 @@ def decode(image):
             b.append(green & 1)
             b.append(blue & 1)
 
-    # Split the retrieved content
-    content = b.tobytes().split(b'split')
-
-    # raw bytes content and file extension
-    data = content[0]
-    ext = content[1].decode('utf-8')
-
-    # Saving as bytes to a file 
-    with open(f'out{ext}', 'wb') as a:
-        a.write(content[0])
+    content = b.tobytes()
+    retrieve_file(content)
 
 
 if __name__ == '__main__':

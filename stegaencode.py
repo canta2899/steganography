@@ -22,11 +22,16 @@ def build_message(msg_file):
     with open(msg_file, "rb") as file:
         msg = file.read()
 
-    # Reads extension
-    ext = os.path.splitext(msg_file)[-1].lower()
+    # Size of the message in bytes
+    size_msg = sys.getsizeof(msg)
+    size_msg = size_msg.to_bytes(4, byteorder='big')
 
+    # Reads file extension and extension's size
+    ext = os.path.splitext(msg_file)[-1][1:].lower()
+    size_ext = len(ext).to_bytes(4, byteorder='big')
+    
     # Builds the whole message
-    msg = msg + b'split' + bytes(ext, 'utf-8') + b'split'
+    msg = size_ext + bytes(ext, 'utf-8') + size_msg + msg
 
     # Conversion to bit array
     bits = bitarray()
