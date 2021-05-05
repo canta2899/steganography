@@ -57,7 +57,7 @@ def update_color(pixel, index, bound, bits_msg):
 def check_dimension(bound, width, height):
     if bound > width*height*3:
         print("This picture can't cointain the given content")
-        exit(1)
+        sys.exit(1)
 
 
 # Builds a new image that embeds the file content
