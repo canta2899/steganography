@@ -32,6 +32,7 @@ def decode(image):
             b.append(green & 1)
             b.append(blue & 1)
 
+    # Split the retrieved content
     content = b.tobytes().split(b'split')
 
     # raw bytes content and file extension
