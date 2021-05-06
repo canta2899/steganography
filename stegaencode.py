@@ -64,12 +64,14 @@ def check_dimension(bound, width, height):
 def embed(image, msg_file):
     width, height = image.size
     pxmatrix = image.load()
-   
-    # Builds bit array from message and checks if it can be
-    # stored inside the picture
+
+    # Checks if the file can be stored
+    bit_size = (os.stat(msg_file)).st_size * 8
+    check_dimension(bit_size, width, height)
+
+    # If so, builds the bit array
     bits_msg = build_message(msg_file)
     bound = len(bits_msg)
-    check_dimension(bound, width, height)
         
     # The index will keep track of the next bit to be stored
     index = 0
