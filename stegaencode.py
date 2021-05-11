@@ -41,11 +41,6 @@ def build_message(msg_file):
     return bits
 
 
-# Modifies the LSB for every color of every pixel
-def new_value(pixelcolor, bit):
-    return (pixelcolor & ~1) | bit
-
-
 # Updates pixel LSB if conditions are verified
 def update_color(pixel, index, bound, bits_msg):
     if index < bound:
